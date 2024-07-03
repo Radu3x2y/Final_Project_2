@@ -1,0 +1,109 @@
+{% load static %}
+{% if user.is_authenticated %}
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+                <div class="position-sticky d-flex flex-column h-100">
+                    <div class="pt-4 pb-1 px-2 welcome-container">
+                        <a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                            <img src="{{ user.employee.profile_picture.url }}" alt="Profile Picture"
+                                 class="profile-picture me-2 sidebar-profile-picture"
+                                 onerror="this.onerror=null;this.src='{% static 'images/avatar.png' %}';">
+                            <span class="fs-4 d-none d-sm-inline welcome-text">
+                                Welcome,
+                                {% if user.first_name %}
+                                    {{ user.first_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </span>
+                        </a>
+                    </div>
+                    <hr class="text-white">
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        {% if user.employee %}
+                            <li class="nav-item {% if '/overview/' in request.path %}active{% endif %}">
+                                <a href="{% url 'overview' %}" class="nav-link d-flex align-items-center">
+                                    <i class="fa-solid fa-home me-2"></i>
+                                    <span class="d-none d-sm-inline">Overview</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if '/documents/' in request.path %}active{% endif %}">
+                                <a href="#" class="nav-link d-flex align-items-center">
+                                    <i class="fa-solid fa-file me-2"></i>
+                                    <span class="d-none d-sm-inline">Documents</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if '/courses/' in request.path %}active{% endif %}">
+                                <a href="#" class="nav-link d-flex align-items-center">
+                                    <i class="fa-solid fa-graduation-cap me-2"></i>
+                                    <span class="d-none d-sm-inline">Courses</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-toggle="collapse"
+                                   href="#employeesCollapse" role="button"
+                                   aria-expanded="false" aria-controls="employeesCollapse">
+                                    <i class="fa-solid fa-chevron-right me-2"></i>
+                                    <span class="d-none d-sm-inline">Employees</span>
+                                </a>
+                                <div class="collapse" id="employeesCollapse">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link collapsed-link {% if '/list-of-employees/' in request.path %}active{% endif %}" href="#">
+                                                <i class="fa-solid fa-users me-2"></i> List of Employees
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link collapsed-link {% if '/create-user-employee/' in request.path %}active{% endif %}" href="{% url "create-user-employee" %}">
+                                                <i class="fa-solid fa-user-plus me-2"></i> Add Employee
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link collapsed-link {% if '/delete-employee/' in request.path %}active{% endif %}" href="#">
+                                                <i class="fa-solid fa-user-minus me-2"></i> Delete Employee
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-toggle="collapse"
+                                   href="#eventsCollapse" role="button"
+                                   aria-expanded="false" aria-controls="eventsCollapse">
+                                    <i class="fa-solid fa-chevron-right me-2"></i>
+                                    <span class="d-none d-sm-inline">Events</span>
+                                </a>
+                                <div class="collapse" id="eventsCollapse">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link collapsed-link" href="#">Example 1</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link collapsed-link" href="#">Example 2</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link collapsed-link" href="#">Example 3</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <div class="mt-auto logout-div">
+                        <form method="post" action="{% url 'logout' %}" class="mb-3 d-flex justify-content-center">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-secondary logout-button">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endif %}
+
+
